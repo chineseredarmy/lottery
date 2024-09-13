@@ -139,9 +139,33 @@
 <body>
 <div id="main" class="wall">
     <div class="result-btn">
-       <a href="./result.html" target="_blank">获奖名单</a>
+        <button onclick="downloadCSV()">下载数据</button>
     </div>
 </div>
+
+<script>
+    function downloadCSV() {
+        // 定义CSV文件内容
+        const csvContent = "data:text/csv;charset=utf-8,"
+            + "Name, Age, Country\n"
+            + "John Doe, 30, USA\n"
+            + "Jane Smith, 25, UK";
+    
+        // 创建隐藏的<a>元素并下载
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "data.csv");
+        document.body.appendChild(link);
+    
+        // 触发点击事件下载文件
+        link.click();
+    
+        // 移除临时创建的元素
+        document.body.removeChild(link);
+    }
+</script>
+
 <div id="result" class="result">
 </div>
 <div id="tools" class="tools">
