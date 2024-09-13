@@ -145,18 +145,27 @@
 
 <script>
     function downloadCSV() {
+
         // 定义CSV文件内容
-        const csvContent = "data:text/csv;charset=utf-8,"
-            + "Name, Age, Country\n"
-            + "John Doe, 30, USA\n"
-            + "Jane Smith, 25, UK";
+        let csvContent = "\uFEFF编号,成绩\n";
+
+        var choosed = JSON.parse(localStorage.getItem('choosed')) || {};
+        for (let key in choosed) {
+            if (choosed.hasOwnProperty(key)) {
+                // let value = choosed[key];
+                let resultArray = key.split("-");
+                // csvContent += `${key},${value}\n`;  // 添加每一行的内容
+                csvContent += `${resultArray[0]},${resultArray[2]}\n`;  // 添加每一行的内容
+            }
+        }       
     
         // 创建隐藏的<a>元素并下载
-        const encodedUri = encodeURI(csvContent);
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "data.csv");
-        document.body.appendChild(link);
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", "choosed.csv");  // 文件名为 choosed.csv
+        document.body.appendChild(link);  // 添加到文档中
     
         // 触发点击事件下载文件
         link.click();
@@ -243,7 +252,7 @@
                 selected: 30,
                 running: false,
                 btns: [
-                    30, 10, 5, 2, 1
+                    55, 20, 10
                 ]
             },
             mounted () {
